@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,109 +14,19 @@
   <!-- iPhone / iPad -->
   <link rel="apple-touch-icon" href="apple-touch-icon%20(1).png">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="DSBER Trading">
+  <meta name="apple-mobile-web-app-title" content="DSBER">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
   <style>
-    * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; }
-    body {
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      background: #f4f6fa; color: #0d2a5c;
-      display: flex; align-items: center; justify-content: center; padding: 16px;
-    }
-    .card {
-      background: #fff; width: 100%; max-width: 380px; border-radius: 16px;
-      padding: 28px 22px; text-align: center; box-shadow: 0 6px 24px rgba(13,42,92,.12);
-    }
-    .card img { width: 140px; height: 140px; }
-    h1 { font-size: 22px; margin: 10px 0 4px; }
-    p { margin: 6px 0; color: #4a5a78; font-size: 15px; line-height: 1.45; }
-    .btn {
-      display: block; width: 100%; padding: 14px; margin-top: 12px; border: 0;
-      border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; text-decoration: none;
-    }
-    .primary { background: #0d2a5c; color: #fff; }
-    .secondary { background: #e7ecf5; color: #0d2a5c; }
-    .hidden { display: none; }
-    .steps { text-align: left; background: #f4f6fa; border-radius: 10px; padding: 12px 14px; margin-top: 14px; }
-    .steps ol { margin: 6px 0 0; padding-left: 20px; }
-    .steps li { margin: 4px 0; font-size: 15px; }
-    #loading { font-size: 15px; color: #4a5a78; }
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #fff; }
+    iframe { border: 0; width: 100%; height: 100vh; height: 100dvh; display: block; }
   </style>
 </head>
 <body>
-  <div id="loading" class="hidden">Opening DSBER Trading…</div>
-
-  <div id="landing" class="card hidden">
-    <img src="icon-512%20(1).png" alt="DSBER Trading logo">
-    <h1>DSBER Trading</h1>
-    <p>Install this app on your phone or computer for quick access.</p>
-
-    <button id="installBtn" class="btn primary hidden">Install App</button>
-
-    <div id="iosSteps" class="steps hidden">
-      <strong>Install on iPhone / iPad (Safari):</strong>
-      <ol>
-        <li>Tap the <b>Share</b> button (square with arrow up).</li>
-        <li>Tap <b>Add to Home Screen</b>.</li>
-        <li>Tap <b>Add</b>.</li>
-      </ol>
-    </div>
-
-    <div id="otherSteps" class="steps hidden">
-      <strong>Install:</strong>
-      <ol>
-        <li><b>Android (Chrome):</b> tap <b>⋮</b> → <b>Install app</b>.</li>
-        <li><b>PC (Chrome/Edge):</b> click the install icon in the address bar.</li>
-      </ol>
-    </div>
-
-    <a id="openBtn" class="btn secondary" href="#">Open in Browser</a>
-  </div>
-
+  <iframe src="https://script.google.com/macros/s/AKfycbzORuZbvrf4f43rSeQkiZz48rNbUOAiNzpGZHDQJog4mxQn-dRvkC2iqv6LijIUUQj0/exec"
+          allow="geolocation; camera; clipboard-write"></iframe>
   <script>
-    var APP_URL = 'https://script.google.com/macros/s/AKfycbzORuZbvrf4f43rSeQkiZz48rNbUOAiNzpGZHDQJog4mxQn-dRvkC2iqv6LijIUUQj0/exec';
-
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
-
-    var isInstalled =
-      window.matchMedia('(display-mode: standalone)').matches ||
-      window.matchMedia('(display-mode: fullscreen)').matches ||
-      window.matchMedia('(display-mode: minimal-ui)').matches ||
-      window.navigator.standalone === true;
-
-    document.getElementById('openBtn').href = APP_URL;
-
-    if (isInstalled) {
-      document.getElementById('loading').classList.remove('hidden');
-      window.location.replace(APP_URL);
-    } else {
-      document.getElementById('landing').classList.remove('hidden');
-
-      var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
-                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      document.getElementById(isIOS ? 'iosSteps' : 'otherSteps').classList.remove('hidden');
-
-      var deferredPrompt = null;
-      var installBtn = document.getElementById('installBtn');
-      window.addEventListener('beforeinstallprompt', function (e) {
-        e.preventDefault();
-        deferredPrompt = e;
-        installBtn.classList.remove('hidden');
-      });
-      installBtn.addEventListener('click', function () {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(function () {
-          deferredPrompt = null;
-          installBtn.classList.add('hidden');
-        });
-      });
-      window.addEventListener('appinstalled', function () {
-        installBtn.classList.add('hidden');
-      });
-    }
   </script>
 </body>
 </html>
